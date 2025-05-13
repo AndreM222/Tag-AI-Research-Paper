@@ -1,0 +1,16 @@
+*.aux
+*.bbl
+*.bbl-SAVE-ERROR
+*.bcf
+*.bcf-SAVE-ERROR
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.xml
+
+.DS_Store
+
+_minted
+_minted-AI-Sandbox
