@@ -9,6 +9,7 @@
 *.log
 *.out
 *.xml
+*.listing
 
 .DS_Store
 
