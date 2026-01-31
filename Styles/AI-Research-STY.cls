@@ -1,5 +1,5 @@
 \LoadClass[10pt, letterpaper]{article}
-\usepackage{geometry, graphicx, minted, caption, xparse, tcolorbox, tabularx}
+\usepackage{geometry, graphicx, minted, caption, xparse, tcolorbox, tabularx, booktabs, eso-pic}
 \tcbuselibrary{minted, listings, breakable, skins}
 
 % -- Fonts Setup
@@ -11,9 +11,18 @@
 \setotherlanguages{japanese, spanish}
 
 % Japanese Font Setup
-\newfontfamily\japanesefont[ItalicFont = *, BoldItalicFont = *]{Noto Serif CJK JP}
+\newfontfamily\japanesefont[
+    Scale=0.93,
+    LetterSpace=0.5
+]{Noto Serif CJK JP}
 \newfontfamily\japanesefontsf{Noto Sans CJK JP}
-\newfontfamily\japanesefonttt{Noto Sans Mono CJK JP}
+\newfontfamily\japanesefonttt[
+    Scale=0.95,
+    ItalicFont = *,
+    SlantedFont = *
+]{Noto Sans Mono CJK JP}
+
+\renewcommand{\arraystretch}{1.3}
 
 % Spanish Font
 \newfontfamily\spanishfont{Times New Roman}
@@ -21,12 +30,11 @@
 \usepackage{setspace}
 \singlespacing
 
-\usepackage[style=ieee]{biblatex}
+\usepackage[style=ieee, language=auto, autolang=langname]{biblatex}
 \setlength\bibitemsep{\baselineskip}
 \usepackage{xurl}
 
 \DeclareLanguageMapping{japanese}{english}
-
 \usemintedstyle{manni}
 
 \geometry{
@@ -80,13 +88,17 @@
 \newcommand\midSubSection[1]{\subsection{#1}}
 \newcommand\midSubSectionContent[1]{#1}
 
-\NewDocumentCommand{\tableBlock}{ m m }{
-	\begin{table}[htbp]
-		\centering
-		\begin{tabular}{#1}
-			#2
-		\end{tabular}
-	\end{table}
+\NewDocumentCommand{\tableBlock}{ m m m }{
+    \begin{table}[htbp]
+        \centering
+        \begin{tabular}{#1}
+            \toprule
+            #2 \\
+            \midrule
+            #3 \\
+            \hline
+        \end{tabular}
+    \end{table}
 }
 
 \NewDocumentCommand{\imageBlock}{ O{0.3} m m}{
@@ -118,8 +130,23 @@
 	colframe=black!70,
 	breakable,
 	enhanced,
-    title={\begin{tabularx}{\linewidth}{@{}lXl@{}}#2 & & \small{#1}\end{tabularx}},
+    title={\begin{tabularx}{\linewidth}{@{}lXl@{}}\footnotesize{#2} & & \scriptsize{#1}\end{tabularx}},
 	#3
 }
 
 \newcommand\bibliographyBlock[1]{\printbibliography[heading=bibintoc, title={#1}]}
+
+\NewDocumentCommand{\headerBlock}{ +m }{
+    \AddToShipoutPicture*{
+        \AtTextUpperLeft{
+            \makebox[\textwidth][r]{
+                \parbox{0.6\textwidth}{
+                    \raggedleft
+                    \scriptsize
+                    #1\par
+                    \hrule
+                }
+            }
+        }
+    }
+}

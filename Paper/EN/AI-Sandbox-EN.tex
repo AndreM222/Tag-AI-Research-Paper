@@ -11,6 +11,10 @@
     ]{hyperref}
 
 \begin{document}
+\headerBlock{
+    Published in the Proceedings of the ASEE Annual Conference\textsuperscript{1}\par
+    Presented at Penn State University (Sigma Xi)\textsuperscript{2}
+}
 \begin{center}
 	\researchTitle{Tag AI-Sandbox}
 
@@ -41,6 +45,13 @@
 		constraints. Based on their behavior, we will propose fine-tuning ways to improve the research further towards
 		a replication of human behavior through the use of genomes.
 	}
+
+    \footnotetext[1]{ASEE publication available at \citeurl{AITagSandboxPaper}}
+
+    \footnotetext[2]{Presented at the Penn State University Sigma Xi Research Exhibition
+    (\url{https://sites.psu.edu/behrendsigmaxi2025/2025/03/11/tag-ai-sandbox/})}
+
+    \ClearShipoutPicture
 
 	\midSection{Introduction}
 	\midSectionContent{
@@ -74,10 +85,9 @@
 
 	\midSection{Prerequisites}
 	\midSectionContent{
-		\tableBlock{|l|l|l|l|l|}{
-			\hline
-			Type     & Version & Name   & Description                   & Why                                        \\
-			\hline
+        \tableBlock{|l|l|l|l|l|}{
+            Type     & Version & Name   & Description                   & Why
+        }{
 			Language & C++20   & C++    & Is a low-level OOP language   & It is quite popular for AI-Programming     \\
 			&         &        & used for Unreal Engine        & and the speed.                             \\
 			\hline
@@ -90,8 +100,7 @@
 			&         &        &                               & increase its speed with GPU computing.     \\
 			\hline
 			Graphics & 5.4.4   & Unreal & Used for creating a graphic   & Is able to handle complex computing and    \\
-			&         & Engine & visualization of the entities & high performant                            \\
-			\hline
+			&         & Engine & visualization of the entities & high performant
 		}
 	}
 
@@ -282,10 +291,9 @@ FCollisionShape box = FCollisionShape::MakeBox(BoxDimensions);
 				\bulletBlockItem{Planned} Is ready to be used but has not combined it with the logic to activate it.
 			\end{bulletBlockContent}
 
-			\tableBlock{|l|l|l|}{
-				\hline
-				Stance     & Description                                                    & State   \\
-				\hline
+            \tableBlock{|l|l|l|}{
+                Stance     & Description                                                    & State
+            }{
 				Default    & Is a stance which invokes neutrality and peace                 & Planned \\
 				\hline
 				Masculine  & Is ready for combat or try to show power                       & Used    \\
@@ -312,8 +320,7 @@ FCollisionShape box = FCollisionShape::MakeBox(BoxDimensions);
 				\hline
 				Barrel     & Carrying a barrel                                              & Planned \\
 				\hline
-				Reach      & Is a stance for reaching towards the target to touch for range & Planned \\
-				\hline
+				Reach      & Is a stance for reaching towards the target to touch for range & Planned
 			}
 		}
 	}
@@ -323,10 +330,9 @@ FCollisionShape box = FCollisionShape::MakeBox(BoxDimensions);
 		Actions is the different capabilities the entities have to interact with the world. This adds more complexity
 		and variety to the thinking of the entities.
 
-		\tableBlock{|l|l|l|}{
-			\hline
-			Action & Description               & State   \\
-			\hline
+        \tableBlock{|l|l|l|}{
+            Action & Description               & State
+        }{
 			Run    & High speed movement       & Used    \\
 			\hline
 			Sprint & Medium Speed Movement     & Used    \\
@@ -343,8 +349,7 @@ FCollisionShape box = FCollisionShape::MakeBox(BoxDimensions);
 			\hline
 			Jump   & Jumping                   & Used    \\
 			\hline
-			Touch  & Touch the target          & Used    \\
-			\hline
+			Touch  & Touch the target          & Used
 		}
 
 		\imageBlock[0.4]{../../IMG/ActionPreview.png}{Previews Of Actions}
@@ -391,17 +396,15 @@ FCollisionShape box = FCollisionShape::MakeBox(BoxDimensions);
 			For these entities, I started developing senses like humans have. By senses, I mean by sense of hearing, sense of sight, etc.
 			But for this project we will limit this to the following.
 
-			\tableBlock{|l|l|l|}{
-				\hline
-				Type of Sense & Description                                                              & Status         \\
-				\hline
+            \tableBlock{|l|l|l|}{
+                Type of Sense & Description                                                              & Status
+            }{
 				Space         & This sense will give the entities the ability to know where they are.    & Being Used     \\
 				\hline
 				Touch         & It will be used to obtain data of their interaction to decide if they    & In Development \\
-				& like or dislike.                                                         &                \\
+				& like or dislike.                                                                       &                \\
 				\hline
-				Sight         & For the entities to know what is in front of them and decide what to do. & Being Used     \\
-				\hline
+				Sight         & For the entities to know what is in front of them and decide what to do. & Being Used
 			}
 
 			But every input has subdivisions which create extra complexity. For example in order to get sight we need to
