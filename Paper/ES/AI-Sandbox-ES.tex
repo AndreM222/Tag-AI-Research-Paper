@@ -1,0 +1,508 @@
+%! TeX program = lualatex
+\documentclass{../../Styles/AI-Research-STY}
+\addbibresource{../../References/references.bib}
+
+\setdefaultlanguage{spanish}
+
+\usepackage[
+    pdftitle={AI Jugando Las Traes},
+    pdfauthor={Roberto André Mossi Milla},
+    pdfsubject={Inteligencia artificial multiagente mediante aprendizaje evolutivo y por refuerzo},
+    pdfcreator={LaTeX Y Neovim}
+    ]{hyperref}
+
+\begin{document}
+\headerBlock{
+    Published in the Proceedings of the ASEE Annual Conference\textsuperscript{1}\par
+    Presentado en la Universidad Estatal de Pensilvania (Sigma Xi)\textsuperscript{2}
+}
+\begin{center}
+	\researchTitle{AI Jugando Las Traes}
+
+	\authorInfo{Roberto André Mossi Milla}{
+		Estudiante de Ciencias de la Computación, Universidad de Gannon
+	}
+	\authorInfo{Dr. Ramakrishnan Sundaram}{
+		Profesor de Ingeniería Eléctrica y Cibernética, Universidad de Gannon
+	}
+
+	\vspace{4cm}
+\end{center}
+\begin{Form}
+
+    \renewcommand{\AbstractTitle}{Resumen}
+	\abstractSection{
+        Este artículo desarrolla un AI que juega a las traes a través de la competencia entre diferentes sujetos y el aspecto de
+		supervivencia de un juego de \textit{las traes}. Mediante el uso de genomas, se crean entidades sofisticadas que se
+		coordinan entre sí para el beneficio de su supervivencia. A través de múltiples pruebas utilizando aprendizaje
+		reforzado con genomas como base, se buscan los genes de supervivencia más aptos y estrategias de auto-desarrollo.
+		Posteriormente, se introducen sus capacidades de razonamiento mediante el uso de entornos más complejos generados
+		aleatoriamente, lo que conduce a habilidades más similares a las humanas. Esta investigación ya ha sido realizada
+		previamente en otros juegos como Open-AI hide \& seek, pero para este estudio se añadieron comportamientos más
+		humanos y se utilizaron genomas para observar su ingenio desde una perspectiva biológica. Esta investigación
+		apoya el desarrollo del currículo al introducir a estudiantes del Departamento de Ciencias de la Computación (CS)
+		al desarrollo de inteligencia artificial, y cómo otras áreas como la biología pueden aportar un desarrollo
+		adicional a la tecnología que desarrollan. Se compara cómo esto se relaciona con la estructura biológica de los
+		organismos en su toma de decisiones basada en tareas, inicialización aleatoria y restricciones. Con base en su
+		comportamiento, se propondrán métodos de ajuste fino para mejorar la investigación hacia una replicación más
+		cercana del comportamiento humano mediante el uso de genomas.
+	}
+
+    \footnotetext[1]{Publicación de ASEE disponible en \citeurl{AITagSandboxPaper}}
+
+    \footnotetext[2]{Presentado en la Exposición de Investigación Sigma Xi de la Universidad Estatal de Pensilvania
+    (\url{https://sites.psu.edu/behrendsigmaxi2025/2025/03/11/tag-ai-sandbox/})}
+
+    \ClearShipoutPicture
+
+	\midSection{Introducción}
+	\midSectionContent{
+		Utilizando genomas, el comportamiento de los sujetos será determinado a través de sus genes.
+		Los genes se determinan al inicio mediante un proceso aleatorio, con el fin de otorgar a las entidades un punto
+		de partida para aprender y adaptarse a las tareas de supervivencia que deben completar. A partir de ahí, se les
+		asigna una tarea; en este caso, se establecen aleatoriamente dos grupos, los cuales se dividen en corredores y
+		buscadores. La tarea de estos grupos consiste en que los buscadores deben atrapar a los corredores, y los
+		corredores deben huir de ellos en un número limitado de intentos. Los buscadores que logran atrapar a su objetivo
+		sobreviven, mientras que aquellos que no lo hacen mueren inmediatamente. El equipo contrario aplica el mismo
+		principio, pero con el objetivo de evitar ser atrapado.
+
+		Para el desarrollo completo de este proyecto, se utilizó Unreal Engine. La razón detrás de usar Unreal Engine
+		es que las interacciones de comportamiento similares a las humanas requieren física. Existen muchas opciones,
+		pero Unreal Engine es uno de los motores más populares del mercado, aunque también es conocido por su mayor
+		complejidad debido a que su lenguaje principal es C++. Se tomó esto como un desafío con la esperanza de obtener
+		el mayor rendimiento posible. Para lograrlo, se cuenta con la asistencia de varias librerías. Una de ellas es
+		PyTorch, utilizada para el desarrollo de inteligencia artificial. La otra es CUDA, cuya funcionalidad consiste
+		en redirigir el procesamiento gráfico del proyecto a la tarjeta gráfica, permitiendo que el resto del sistema
+		se encargue del procesamiento del comportamiento.
+	}
+
+	\midSection{Trabajos Relacionados}
+	\midSectionContent{
+		Durante un tiempo, han existido múltiples intentos de crear inteligencia artificial enfocada en el estudio de
+		organismos vivos. Para este caso específico, existe inspiración en dos proyectos concretos. El primer proyecto
+		es \citetitle{MultiAgentHideandSeek} \parencite{MultiAgentHideandSeek}, desarrollado por Open-AI. Este proyecto
+		brindó la inspiración para crear un entorno basado en un juego con el fin de estudiar el ingenio de la IA en
+		situaciones de resolución de problemas. El segundo proyecto es el video
+		\citetitle{ProgrammedSomeCreatures} \parencite{ProgrammedSomeCreatures}. Este proyecto tiene como idea principal
+		la gestión del comportamiento de los organismos mediante el uso de genomas bajo las restricciones del entorno.
+		Esto establece una conexión entre el mundo de la informática y la biología.
+	}
+
+    \midSection{Requisitos}
+    \midSectionContent{
+        \tableBlock{|l|l|l|l|l|}{
+            Tipo     & Versión & Nombre & Descripción                      & Razón
+        }{
+            Lenguaje & C++20   & C++    & Lenguaje OOP de bajo nivel       & Es ampliamente utilizado en      \\
+                     &         &        & usado para Unreal Engine         &  programación de IA              \\
+                     &         &        &                                  & y por su velocidad.              \\
+                     \hline
+            Lenguaje & 3.31.6  & CMake  & Lenguaje utilizado para          & Al usar múltiples repositorios,  \\
+                     &         &        & automatización entre sistemas    & se emplea CMake para automatizar \\
+                     &         &        & operativos                       & la configuración y asegurar      \\
+                     &         &        &                                  & compatibilidad multiplataforma   \\
+                     \hline
+            Librería & 12.0.0  & Cuda   & Modelo de programación para GPU  & Para procesamiento gráfico       \\
+                     &         &        &                                  & intensivo, se usa esta librería  \\
+                     &         &        &                                  & para acelerar el cálculo por GPU \\
+                     \hline
+            Gráficos & 5.4.4   & Unreal & Creación gráfica y visualización & Capaz de manejar computación     \\
+                     &         & Engine & de entidades                     & compleja y alto rendimiento
+                 }
+             }
+
+	\midSection{Generación del Mundo}
+	\midSectionContent{
+		En este caso era evidente que las entidades requerían un mundo en el cual pudieran desplazarse.
+		Inicialmente se consideró crear un mundo estático genérico donde pudieran moverse libremente y aprender el
+		juego por sí mismas. Sin embargo, surgió la posibilidad de que eventualmente se volvieran muy buenas jugando,
+		pero sin espacio adicional para crecer al estar limitadas al mismo entorno. Para resolver esto, se determinó
+		que sería necesario generar nuevos mundos para que pudieran aplicar lo aprendido en nuevos escenarios y así
+		mejorar su toma de decisiones. Hacer esto manualmente después de cada ciclo implicaría un costo de tiempo
+		significativo, por lo que se decidió implementar un generador de mundos\footnote{El código puede encontrarse en https://github.com/AndreM222/Procedural-Generator}. Esta decisión ya había sido aplicada en proyectos a largo plazo como Hide \& Seek de Open-AI, aunque en proyectos pequeños suele modelarse el mundo manualmente. Para evitar redundancia, un generador aleatorio resulta beneficioso.
+
+		Para crear este mundo, primero se planificó el algoritmo a utilizar. Se revisaron diversos recursos sobre
+		generadores en Unreal Engine y fuera de él. Muchos utilizaban el algoritmo A-Star, basado en el algoritmo de
+		Dijkstra, el cual considera vecinos, rutas más cortas y distancia al nodo final \parencite{AStarAlgorithm}. Esto
+		es útil cuando existe un punto inicial y final definido \parencite{IRewroteMyDungeonGenerator}.
+
+		En su lugar, se optó por un enfoque similar a un algoritmo de búsqueda en anchura \parencite{BreadthFirstSearch},
+		sin un punto final definido, sino con un número total de salas a generar. Dado que el objetivo del juego no es
+		llegar a un destino específico, sino huir o perseguir, se eligió una solución más aleatoria.
+
+		El proceso funciona de la siguiente manera: se define un punto inicial llamado origen, el cual genera una sala
+		aleatoria. Las salas contienen flechas de salida que indican posibles conexiones. El generador elige aleatoriamente
+		una salida y genera la siguiente sala conectada, repitiendo el proceso hasta alcanzar el número deseado de salas
+		\parencite{HowToCreateEpicProceduralDungeons}.
+
+		\imageBlock{../../IMG/ExitsPreview.png}{Configuración de Salas}
+		\imageBlock[0.25]{../../IMG/ProceduralPreviewPic.png}{Vista Previa del Generador}
+
+		\midSubSection{Detección de Colisiones}
+		\midSubSectionContent{
+			¿Pero qué ocurrirá si ya no hay más salidas disponibles? Teniendo esa pregunta en consideración, creé dos funciones
+			adicionales: reboot y delete room. La función reboot lo que hace es ejecutar la eliminación de cada habitación que
+			haya sido creada; una vez que todas han sido eliminadas, ejecuta una función de borrado para el generador actual,
+			la cual espera a que se ejecuten todas las instrucciones restantes antes de eliminarse a sí misma. Después de eso,
+			se ejecuta la última instrucción, que genera un nuevo generador de habitaciones e inicia todo el proceso nuevamente,
+			generando aleatoriamente un nuevo mundo con los requisitos dados.
+
+			Pero, ¿qué sucede con la colisión entre diferentes habitaciones?, ¿se superpondrán? Para esta situación creé
+			varias funciones que cubren colisiones en distintos escenarios. Estas situaciones pueden separarse en dos
+			categorías diferentes.
+
+            \begin{bulletBlockContent}
+                \bulletBlockItem{Colisión General} Para la colisión general, todo lo que se requiere es obtener el espacio donde
+                se intenta generar una habitación y comprobar si existe algo en ese punto. Para ello, la función genera una
+                caja de trazado invisible que, si colisiona con cualquier objeto, indica que se debe buscar una nueva ubicación.
+            \end{bulletBlockContent}
+		}
+	}
+
+    \begin{codeBlock}{cpp}[Comprobación de barrido de colisión]
+// Setup Box Dimensions for trace
+FVector BoxDimensions = FVector(50, 50, 50);
+
+FVector traceLocation = exitLocation.GetLocation();
+
+// Trace box to check if collision available
+FCollisionShape box = FCollisionShape::MakeBox(BoxDimensions);
+exitsList[spaceIndex]->GetWorld()->SweepSingleByChannel(
+    Hit,
+    traceLocation,
+    traceLocation,
+    FQuat::Identity,
+    ECC_Visibility,
+    box,
+    QueryParams
+);
+
+// Return true if room type has been found connected
+if (Cast<AMaster_Room>(Hit.GetActor())) return true;
+    \end{codeBlock}
+
+	\midSectionContent{
+        \begin{bulletBlockContent}
+            \bulletBlockItem{Generación por Dimensiones} En base a las dimensiones de la habitación que se intenta generar,
+            es necesario verificar si existe espacio suficiente para que dicho punto pueda ser ocupado. Sin embargo, obtener
+            las dimensiones de una habitación de antemano no es posible con la versión actual de Unreal Engine. Para resolver
+            esto, implementé una solución improvisada: generar brevemente la habitación deseada para obtener sus dimensiones,
+            almacenarlas en una variable de transformación y luego destruir la habitación. Todo este proceso ocurre tan rápido
+            que la habitación generada no llega a ser visible. A partir de ahí, junto con la colisión general, se pasan los
+            nuevos valores calculados y se reemplazan las dimensiones de la caja de trazado para realizar una prueba de
+            colisión más precisa.
+        \end{bulletBlockContent}
+	}
+
+    \begin{codeBlock}{cpp}[Generador de dimensiones]
+// Make temporary room
+AActor* roomModel = GetWorld()->SpawnActor<AMaster_Room>(
+    RoomToSpawn[roomIndex],
+    exitLocation.GetLocation(),
+    FRotator::ZeroRotator,
+    SpawnParams
+);
+
+// Setup Box Dimensions for trace
+FVector BoxDimensions = FVector(roomModel->GetComponentsBoundingBox().GetExtent() - 4);
+BoxDimensions.Z += 3;
+roomModel->Destroy(); // Destroy tmp room after setup
+
+FVector traceLocation = exitLocation.GetLocation() + (
+    exitLocation.GetLocation() - actorLocation.GetLocation());
+traceLocation.Z += BoxDimensions.Z; // Center Box Trace
+
+// Trace box to check if collision available
+FCollisionShape box = FCollisionShape::MakeBox(BoxDimensions);
+    \end{codeBlock}
+
+	\midSubSection{Encapsulación del Mundo}
+	\midSubSectionContent{
+		En el mundo que estamos creando, es necesario agregar ciertas restricciones para las entidades. Estas restricciones
+		ayudan a evitar que las entidades salgan de los límites del mundo y caigan al vacío. El enfoque principal de este
+		proyecto no es que aprendan dónde pueden caerse, sino cómo reaccionar ante la interacción entre diversas entidades.
+		Para estas prevenciones, decidí encapsular con paredes las salidas que quedaron vacías al final de la generación.
+
+		Al cerrar las paredes, es importante evitar que se generen en lugares que conectan con otras habitaciones. Si no se
+		tomara esta precaución, no habría diferencia entre un mundo y un laberinto. Para aclarar esta distinción: un laberinto
+		es generalmente restrictivo; el movimiento está limitado por caminos delimitados por paredes, comúnmente definidos
+		como corredores. En cambio, un mundo, en este contexto, es menos restrictivo y está compuesto tanto por corredores
+		como por espacios abiertos.
+
+		Para evitar que las paredes se generen en todos los lugares posibles, se crean pequeñas cajas de trazado. Estas cajas
+		se utilizan únicamente para detectar si existe alguna habitación conectada al punto donde se desea colocar la pared.
+		Si se detecta una habitación conectada, dicha salida se elimina de la lista de salidas abiertas y se continúa con la
+		siguiente salida a cerrar. Si la habitación deseada no puede colocarse en ninguna de las salidas disponibles, se
+		elimina de la lista de habitaciones posibles y se continúa con la siguiente hasta que no queden más salidas ni
+		habitaciones disponibles.
+
+		\imageBlock[0.4]{../../IMG/MasterRoomChildrenPreview.png}{Creación de Habitaciones}
+	}
+
+	\midSubSection{Semilla}
+	\midSubSectionContent{
+		En cierto punto me di cuenta de que podría ser útil mantener a las entidades en una habitación específica durante un
+		período de tiempo. Para ello decidí agregar una opción de semilla\footnote{Más información disponible en https://github.com/AndreM222/Procedural-Generator/blob/main/docs/setup.md}.
+		Cuando se utiliza una semilla, dependiendo del valor, se generará una habitación que permanecerá igual sin importar
+		cuántas veces se recargue. Sin embargo, el uso de una semilla introduce la posibilidad de que no se logre generar el
+		número total de habitaciones deseado. Este fenómeno puede ocurrir cuando las habitaciones se generan siguiendo un
+		camino específico que eventualmente termina cerrándose sobre sí mismo, sin dejar salidas disponibles. Para este
+		caso, indiqué al generador que omitiera el ciclo de creación de nuevos generadores hasta que uno cumpliera con los
+		requisitos establecidos. Esto se hizo para evitar la ocurrencia de un bucle infinito.
+
+		\imageBlock{../../IMG/SpawnPointsPreview.png}{Generador de Props}
+
+		\imageBlock{../../IMG/PropsPreview.png}{Configuración de Props}
+	}
+
+	\midSubSection{Props y Generadores}
+	\midSubSectionContent{
+		Para añadir generadores de entidades y obstáculos, implementé una función de generación que crea actores de manera
+		aleatoria con capacidades de filtrado, distribuyéndolos a lo largo de las habitaciones. Esta función busca las flechas
+		de generación dentro de la carpeta de generadores.
+	}
+
+	\midSection{Configuración del Personaje}
+	\midSectionContent{
+		Para el modelo 3D y las animaciones estoy utilizando los recursos de un paquete llamado \citetitle{AdvanceLocomotionSystemV4} \parencite{AdvanceLocomotionSystemV4}. Este
+		paquete contiene una gran cantidad de animaciones útiles y algunos modelos simples de los cuales pude beneficiarme
+		para enfocarme en el desarrollo de las acciones y el razonamiento de los personajes.
+
+		Este paquete también incluye una configuración para el movimiento, pero fue realizada completamente en blueprints,
+		lo cual no es fácilmente accesible desde C++. Para esta situación desarrollé mi propia lógica con respecto a la
+		interacción que las entidades\footnote{El código puede encontrarse en https://github.com/AndreM222/AI-Entities} realizan
+		en el espacio 3D. Los comportamientos incluidos en el proyecto fueron realizados completamente utilizando blueprints.
+		Esta es una de las ventajas de Unreal Engine, pero surge un problema. Actualmente no es posible interactuar desde C++
+		hacia los blueprints, aunque sí puede hacerse de forma inversa. Por lo tanto, desarrollé mi propia versión de
+		la locomoción para lograr un movimiento realista, utilizando las animaciones del paquete.
+
+		\imageBlock[0.6]{../../IMG/Teams-Picture-Preview.png}{Configuración del Personaje}
+
+		\midSubSection{Estados}
+		\midSubSectionContent{
+			Los estados son las diferentes posturas en las que las entidades pueden cambiar dependiendo de su interacción,
+			con el objetivo de aplicar interacciones más humanas en el mundo real. Las interacciones podrían haberse realizado
+			sin animaciones, pero si se desean considerar los retrasos en la reacción y una mejor facilidad de visualización,
+			decidí utilizar las animaciones del paquete de recursos para hacerlo posible. A continuación se muestran los
+			estados disponibles creados.
+
+			\begin{bulletBlockContent}
+				\bulletBlockItem{Usado} Actualmente se utiliza para algún tipo de interacción.
+				\bulletBlockItem{Planificado} Está listo para ser utilizado, pero aún no se ha combinado con la lógica para activarlo.
+			\end{bulletBlockContent}
+
+            \tableBlock{|l|l|l|}{
+                Postura    & Descripción                                                  & Estado
+            }{
+                Default    & Es una postura que invoca neutralidad y paz                  & Planificado \\
+                \hline
+                Masculine  & Está listo para combate o para mostrar poder                 & Usado       \\
+                \hline
+                Feminine   & Es una postura más elegante y noble                          & Planificado \\
+                \hline
+                Injured    & Muestra la baja cantidad de salud de las entidades           & Usado       \\
+                \hline
+                HandsTied  & Muestra cuando existe una restricción en las entidades       & Planificado \\
+                \hline
+                Rifle      & Sosteniendo un rifle                                         & Planificado \\
+                \hline
+                Pistol 1H  & Sosteniendo una pistola con una mano                         & Planificado \\
+                \hline
+                Pistol 2H  & Sosteniendo una pistola con ambas manos                      & Planificado \\
+                \hline
+                Bow        & Sosteniendo un arco                                          & Planificado \\
+                \hline
+                Torch      & Sosteniendo una antorcha para iluminación                    & Planificado \\
+                \hline
+                Binoculars & Sosteniendo binoculares para ver a larga distancia           & Planificado \\
+                \hline
+                Box        & Cargando cajas                                               & Planificado \\
+                \hline
+                Barrel     & Cargando un barril                                           & Planificado \\
+                \hline
+                Reach      & Postura para alcanzar y tocar el objetivo a corta distancia  & Planificado
+            }
+        }
+    }
+
+	\midSection{Acciones}
+	\midSectionContent{
+		Las acciones son las diferentes capacidades que las entidades tienen para interactuar con el mundo. Esto añade
+		mayor complejidad y variedad al razonamiento de las entidades.
+
+        \tableBlock{|l|l|l|}{
+            Acción & Descripción                    & Estado
+        }{
+			Run    & Movimiento a alta velocidad    & Usado       \\
+			\hline
+			Sprint & Movimiento a velocidad media   & Usado       \\
+			\hline
+			Walk   & Movimiento a baja velocidad    & Usado       \\
+			\hline
+			Crouch & Agacharse en espacios pequeños & Usado       \\
+			\hline
+			Climb  & Escalar paredes                & Usado       \\
+			\hline
+			Grab   & Agarrar un objeto              & Planificado \\
+			\hline
+			Drop   & Soltar el objeto sostenido     & Planificado \\
+			\hline
+			Jump   & Saltar                         & Usado       \\
+			\hline
+			Touch  & Tocar el objetivo              & Usado
+		}
+
+		\imageBlock[0.4]{../../IMG/ActionPreview.png}{Vista Previa de Acciones}
+	}
+
+	\midSection{Toma de Decisiones a Través de Genomas}
+	\midSectionContent{
+		He comenzado el desarrollo de la inteligencia de los personajes utilizando genomas, pero aún faltan una variedad
+		de funciones para que puedan tomar decisiones racionales a través de generaciones de datos proporcionados por
+		los padres.
+
+		Esta aplicación tuvo éxito en tareas simples, como que las entidades tengan la necesidad de dirigirse a áreas
+		específicas del mapa. Sin embargo, el juego de atrapar (las traes) es una tarea más compleja que requerirá más datos y
+		capacidades por parte de las entidades.
+
+		\midSubSection{Algoritmo Genético}
+		\midSubSectionContent{
+			Para más detalles sobre cómo funciona esto, se utiliza un algoritmo genético \parencite{GeneticAlgorithm}, lo cual
+			implica el uso de la evolución. En cuanto a la toma de decisiones, podríamos permitir que una entidad intente
+			cablear su propio cerebro mediante algo llamado mutación. Sin embargo, habrá un límite en cuanto a cuánto puede
+			crecer o encontrar mejores formas de resolver un problema. Como todos sabemos, cuando se trata del desarrollo
+			personal existen factores internos y externos que nos ayudan a crecer. Los factores internos se entienden como
+			las experiencias que hemos vivido y que utilizamos para tomar decisiones, mientras que los factores externos
+			son aquellos que nos enseñan a partir de su propia experiencia. Este factor no solo nos hace crecer, como lo hace
+			el interno, sino que nos permite crecer de la manera más eficiente.
+
+			\imageBlock[0.15]{../../IMG/GeneticAlgorithm.png}{Algoritmo Genético}
+		}
+
+		\midSubSection{Algoritmo NEAT}
+		\midSubSectionContent{
+			El algoritmo NEAT \parencite{NeatAlgorithm} utiliza el algoritmo genético, pero pone en práctica la idea de los
+			genomas para desarrollar sus cerebros. Al contar con sentidos, acciones y neuronas internas, estas neuronas se
+			conectan como topologías aumentadas, lo que significa que su cerebro evoluciona según sus necesidades. Sin
+			embargo, para mantener cierto control, se establece un límite máximo de neuronas.
+
+			El algoritmo toma dos padres y los combina utilizando feromonas determinadas por su similitud, la cual en este
+			caso se define como qué tan bien resuelven su tarea. Todas estas neuronas pueden combinarse entre sí y consigo
+			mismas. Para realizar una limpieza, se implementó una función que detecta si alguna conexión no cumple ninguna
+			función y la elimina.
+
+			Si una entidad tiene demasiados sentidos, puede verse abrumada y no ejecutar correctamente sus acciones, pero si
+			tiene muy pocos, no encontrará la mejor forma de resolver un problema.
+
+			\imageBlock[0.15]{../../IMG/NeatAlgorithm.png}{Algoritmo NEAT}
+		}
+
+		\midSubSection{Senses}
+		\midSubSectionContent{
+			Para estas entidades, comencé a desarrollar sentidos similares a los de los humanos. Por sentidos me refiero al
+			sentido del oído, el sentido de la vista, etc. Sin embargo, para este proyecto limitaremos estos sentidos a los
+			siguientes.
+
+            \tableBlock{|l|l|l|}{
+                Tipo de Sentido & Descripción                                                                  & Estado
+            }{
+				Espacio         & Este sentido permitirá a las entidades saber dónde se encuentran.            & En Uso        \\
+				\hline
+				Tacto           & Se utilizará para obtener datos de sus interacciones y decidir si            & En Desarrollo \\
+				                & les agrada o desagrada.                                                      &               \\
+				\hline
+				Vista           & Permite a las entidades saber qué tienen frente a ellas y decidir qué hacer. & En Uso
+			}
+
+			Pero cada entrada tiene subdivisiones que crean complejidad adicional. Por ejemplo, para obtener la vista es
+			necesario calcular la distancia a los actores, la distancia a las paredes, la cantidad de población, entre otros.
+			Para ello, se utilizan diversos trazados con el fin de calcular distancias, cantidades, qué hay al frente, etc.
+
+			\imageBlock[0.35]{../../IMG/TracingSense.png}{Vista Previa de los Sentidos}
+
+			El comportamiento inicial solo contaba con correr, saltar y escalar como acciones. En cuanto a los sentidos,
+			se detectaba la densidad de población y la distancia, así como una configuración mínima de la distancia a los
+			límites. Los personajes comenzaron únicamente a moverse en círculos y no realizaban nada en particular. Por
+			ello, se añadieron más sentidos y acciones como la detección de bordes, la ubicación actual basada en los
+			límites y valores normalizados. Con esto se incrementó su proceso de razonamiento y comenzaron a navegar más;
+			algunos no hacían nada, y otros saltaban si se detectaba una pared cercana o, por el contrario, si no la había.
+			Resultó fascinante observar cómo comenzaron a desarrollarse más a medida que podían percibir y realizar más
+			acciones.
+		}
+	}
+
+	\midSection{Todo en Uno}
+	\midSectionContent{
+		Dado que la escala de este proyecto es bastante grande y que además muchos recursos pueden utilizarse para pruebas
+		que no serán necesarios en el producto final, separé todos los componentes en distintos repositorios. Sin
+		embargo, esto implica que en algún punto debe realizarse una fusión. Unreal Engine no es tan sencillo de manejar
+		cuando se trata de fusionar distintos proyectos en uno solo, a diferencia de otras herramientas, por lo que fue
+		necesario crear un sistema de fusión automatizado utilizando un archivo de cmake
+		\footnote{Para el proyecto fusionado, véase https://github.com/AndreM222/Tag-AI-Sandbox}.
+
+		Este proyecto se encargará de la interfaz de usuario y de la comunicación entre todos los componentes creados sin
+		afectar los scripts originales. Esto permite mantener la seguridad del código al aislarlo en diferentes
+		repositorios, evitando así posibles rupturas.
+
+		\midSubSection{Por qué CMake}
+		\midSubSectionContent{
+			Inicialmente pensé en crear un archivo bash para ejecutar la fusión entre los proyectos, pero esto habría
+			limitado la configuración a sistemas operativos específicos. CMake, aunque requiere una instalación, permite
+			que el proceso de ejecución sea multiplataforma, lo que lo convierte en una opción ideal.
+		}
+
+		\midSubSection{Cómo Añadir}
+		\midSubSectionContent{
+			Para facilitar la configuración, decidí utilizar un archivo json para listar los proyectos que se desean
+			fusionar, así como una opción de filtrado. Este sistema de fusión se encarga de eliminar archivos no importantes,
+			como los de compilación y el script principal de los proyectos, y reemplaza todas las APIs por las del proyecto
+			actual.
+		}
+	}
+
+	\midSection{Evaluación}
+	\midSectionContent{
+		\midSubSection{Trayectoria}
+		\midSubSectionContent{
+			Las entidades parecen terminar siguiendo un patrón de desplazarse hacia direcciones específicas hasta que
+			logran tocar su objetivo o evitarlo. Sin embargo, se observa una mejora constante con el tiempo en su
+			comportamiento y adaptación a diferentes entornos.
+
+			Intenté ejecutarlo bajo los mismos requisitos que \citetitle{ProgrammedSomeCreatures}
+			\parencite{ProgrammedSomeCreatures} para comprobar qué ocurriría con una misión más básica, como dirigirse a
+			áreas específicas del mapa. Al ejecutarlo, terminaron reaccionando de la misma manera. Esto puede deberse a que
+			un juego de atrapar requiere sentidos como la vista, el tacto y el sentido del espacio para tomar decisiones más
+			racionales.
+		}
+
+		\midSubSection{Obstáculos}
+		\midSubSectionContent{
+			Dado que aún no se han realizado muchas pruebas, por ahora las entidades parecen caminar hacia las paredes en
+			ciertos ángulos hasta que logran cruzar al otro lado si es necesario.
+
+			Se requerirán más pruebas para observar cómo mejora su comportamiento con el tiempo.
+		}
+	}
+
+	\midSection{Qué Sigue}
+	\midSectionContent{
+		Continuaré desarrollando la estructura para la toma de decisiones y trasladaré el proyecto a la supercomputadora
+		para comenzar a obtener datos mientras continúo implementando nuevas funcionalidades. También necesito
+		desarrollar una interfaz de usuario que me permita obtener datos de los eventos, así como tomar capturas de
+		pantalla en cada generación. Mientras las entidades se ejecutan en segundo plano, estaré trabajando en los
+		comportamientos adicionales para implementarlos.
+
+		Para mejorar la toma de decisiones de las entidades, comenzaré a incorporar más sentidos. Esto mejorará su
+		capacidad de decisión al poder elegir ubicaciones basándose en dónde estuvieron, lo que tocaron o lo que vieron,
+		así como en lo que consideran interesante, peligroso o irrelevante.
+
+		El comportamiento de las entidades aún es primitivo y requiere mayor desarrollo para observar mejoras más
+		significativas. Se necesitan iteraciones adicionales para analizar cómo interactúan con sus entornos y si logran
+		aprender exitosamente a atrapar o escapar del objetivo.
+	}
+
+\end{Form}
+
+\bibliographyBlock{Referencias}
+
+\end{document}
